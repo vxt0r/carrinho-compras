@@ -1,0 +1,22 @@
+<script>
+    document.querySelector('body').style.backgroundColor = '#F0E68C';
+</script>
+
+<section class="pedido">
+    <h1>Seu pedido foi efetuado com sucesso !</h1>
+
+    <?php foreach($this->view->dados as $dados){?>
+        <div class="pedido-item">
+            <span><?php echo $dados['nome'] ?></span>
+            <span>Quantidade: <?php echo $dados['qtd']?></span>
+            <span>Sub-Total: R$ <?php echo $dados['preco'] * $dados['qtd']?></span>
+        </div>
+        <br>
+    <?php }?>
+
+    <span>Forma de pagamento: <?php echo $_SESSION['detalhes_compra']['forma-pagamento']?></span><br><br>
+    <span>Total: R$ <?php echo $_SESSION['detalhes_compra']['total']?></span><br><br><br>
+
+    <a href="/pedido?finalizado=2">Voltar pra página inicial</a>
+
+</section>

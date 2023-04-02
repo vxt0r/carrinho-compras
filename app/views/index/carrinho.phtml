@@ -1,0 +1,40 @@
+<h1>Seu Carrinho</h1>
+
+<section class="carrinho">
+
+    <?php if(empty($this->view->dados)){ ?>
+        <span>Seu carrinho está vazio!</span>
+    <?php } 
+    else {
+        $total = 0;
+        foreach($this->view->dados as $i=>$dados){ ?>
+        <div class="itens">
+            <span><?php echo $dados['nome'] ?></span>
+            <span>Preço Unitário: R$ <?php echo $dados['preco'] ?></span>
+            <span>Quantidade: <?php echo $dados['qtd'] ?></span>
+            <span>Sub-Total: R$ <?php echo $dados['qtd'] * $dados['preco']?></span>
+            <?php  $total += $dados['preco'] * $dados['qtd'] ?>
+            <a href="?remover=1&id=<?php echo $dados['id'] ?>">Remover</a>
+        </div>
+        <?php } ?><a href="?finalizar=1">Finalizar Compra</a><br><br>
+
+    <?php } 
+    if(isset($_GET['finalizar'])){?>
+        <span>Total: R$ <?php echo $total ?></span><br><br>
+        <form action="/pedido?finalizado=1" method="POST">
+            <input type="hidden" name="total" value="<?php echo $total ?>">
+            <select name="forma-pagamento">
+                <option value="Cartão de Crédito">Cartão de Crédito</option>
+                <option value="Boleto">Boleto</option>
+                <option value="Pix">Pix</option>
+            </select><br>
+            <button type="submit">Confirmar</button>
+        </form>
+        <a class="cancelar" href="/carrinho">Cancelar</a>
+    <?php } ?>
+</section>
+
+<section>
+    <a href="/">Escolher mais produtos</a><br><br>
+    <a href="?limpar=1">Limpar carrinho</a>
+</section>
