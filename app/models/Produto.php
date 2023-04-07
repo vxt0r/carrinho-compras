@@ -5,7 +5,7 @@ use MF\model\Model;
 
 class Produto extends Model{
 
-    
+
     private string $nome;
     private float $preco;
     private int $qtd;
@@ -15,12 +15,8 @@ class Produto extends Model{
         $this->$atributo = $valor;
     }
 
-    public function getProdutos(){
-        $query = 'select id,nome,preco,imagem from produtos';
+    public function getProdutos():array{
+        $query = 'SELECT id,nome,preco,imagem FROM produto';
         return $this->db->query($query)->fetchAll(\PDO::FETCH_ASSOC);
-    }
-
-    public function adicionar(){
-        
     }
 }

@@ -11,7 +11,8 @@ class IndexController extends Action{
 
     private function autenticado(){
         session_start();
-        if(gettype($_SESSION['id_usuario']) != 'integer' || $_SESSION['id_usuario'] < 0){
+
+        if(!isset($_SESSION['id_usuario']) || intval($_SESSION['id_usuario']) < 0){
             header('location:/login');
             exit();
         }
@@ -29,21 +30,21 @@ class IndexController extends Action{
         $carrinho = Container::getModel('carrinho');
 
         if(isset($_GET['adicionar'])){
-            $carrinho->adicionarProduto($_POST['id'],$_POST['qtd'],$_SESSION['id_usuario']);
+            $carrinho->adicionarProduto(intval($_POST['id']),intval($_POST['qtd']),intval($_SESSION['id_usuario']));
             header('location: /carrinho');
         }
 
         if(isset($_GET['limpar'])){
-            $carrinho->limpar($_SESSION['id_usuario']);
+            $carrinho->limpar(intval($_SESSION['id_usuario']));
             header('location: /carrinho');
         }
 
         if(isset($_GET['remover'])){
-            $carrinho->removerProduto($_GET['id'],$_SESSION['id_usuario']);
+            $carrinho->removerProduto(intval($_GET['id']),intval($_SESSION['id_usuario']));
             header('location: /carrinho');
         }
 
-        $this->view->dados = $carrinho->getProdutos($_SESSION['id_usuario']);
+        $this->view->dados = $carrinho->getProdutos(intval($_SESSION['id_usuario']));
         $_SESSION['dados'] = $this->view->dados;
         $this->render('carrinho','layout');
     }
@@ -52,16 +53,16 @@ class IndexController extends Action{
         $this->autenticado();
 
         if(isset($_GET['finalizado'])){
-            
+
             if($_GET['finalizado'] == 1){
                 $_SESSION['detalhes_compra'] = $_POST;
                 header('location:pedido');
             }
-    
+
             elseif($_GET['finalizado'] == 2){
                 unset($_SESSION['detalhes_compra']);
                 unset($_SESSION['dados']);
-                Container::getModel('carrinho')->limpar($_SESSION['id_usuario']);
+                Container::getModel('carrinho')->limpar(intval($_SESSION['id_usuario']));
                 header('location:/');
             }
         }
@@ -69,10 +70,9 @@ class IndexController extends Action{
         if(!isset($_SESSION['dados']) || !isset($_SESSION['detalhes_compra'])){
             header('location:/');
         }
-        
+
         $this->view->dados = $_SESSION['dados'];
         $this->render('pedido','layout');
     }
-   
-}
 
+}

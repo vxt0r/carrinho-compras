@@ -5,18 +5,18 @@ use MF\model\Model;
 
 class Autenticacao extends Model{
 
-    private function verificarCadastro($email){
-        $query = 'SELECT id FROM usuarios WHERE email = ?';
+    private function verificarCadastro(string $email):array{
+        $query = 'SELECT id FROM usuario WHERE email = ?';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(1,$email);
         $stmt->execute();
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
-    
-    public function cadastrar($nome,$email,$senha){
+
+    public function cadastrar(string $nome,string $email,string $senha):void{
         if(!$this->verificarCadastro($email)){
             $hash = password_hash($senha,PASSWORD_DEFAULT);
-            $query = 'INSERT INTO usuarios(nome,email,senha) VALUES(?,?,?)';
+            $query = 'INSERT INTO usuario(nome,email,senha) VALUES(?,?,?)';
             $stmt = $this->db->prepare($query);
             $stmt->bindValue(1,$nome);
             $stmt->bindValue(2,$email);
@@ -27,8 +27,8 @@ class Autenticacao extends Model{
         else die('O usuário já existe');
     }
 
-    public function login($email,$senha){
-        $query = 'SELECT id,senha FROM usuarios WHERE email = ?';
+    public function login(string $email,string $senha):void{
+        $query = 'SELECT id,senha FROM usuario WHERE email = ?';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(1,$email);
         $stmt->execute();
