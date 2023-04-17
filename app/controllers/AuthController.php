@@ -12,6 +12,9 @@ class AuthController extends Action{
         $autenticacao = Container::getModel('autenticacao');
 
         if(isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha'])){
+          if(empty($_POST['nome']) ||empty($_POST['email']) || empty($_POST['senha'])){
+              header('location: /cadastrar?erro=1');
+          }
             $autenticacao->cadastrar($_POST['nome'],$_POST['email'],$_POST['senha']);
         }
 
@@ -24,9 +27,13 @@ class AuthController extends Action{
         $autenticacao = Container::getModel('autenticacao');
 
         if(isset($_POST['email']) && isset($_POST['senha'])){
+            if(empty($_POST['email']) || empty($_POST['senha'])){
+                header('location: /login?erro=1');
+            }
+
             $autenticacao->login($_POST['email'],$_POST['senha']);
         }
-        
+
         $this->view->dados = $_SERVER['REQUEST_URI'];
         $this->render('login','layout');
     }

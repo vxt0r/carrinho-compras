@@ -1,27 +1,40 @@
 <?php
 
+if(isset($_GET['erro'])){?>
+  <script>
+      alert('Preencha todos os campos')
+  </script>
+<?php }
+
+$action = '/login';
 $btn = 'Entrar';
 $span = 'Ainda não possui conta ?';
 $link = '/cadastrar';
 $texto_link = 'Cadastre-se';
 
+if($this->view->dados == '/cadastrar'){
+      $action='/cadastrar';
+      $btn = 'Cadastrar';
+      $span = 'Já possui conta ?';
+      $link = '/login';
+      $texto_link = 'Entrar';
+}
 ?>
 
 <section class="login">
-    <form class="form-login" method="POST">
-        <?php if($this->view->dados == '/cadastrar'){ 
-        $btn = 'Cadastrar';
-        $span = 'Já possui conta ?';
-        $link = '/login';
-        $texto_link = 'Entrar';    
-        ?>
+    <form action="<?php echo $action?>"class="form-login" method="POST">
+
+        <?php if($this->view->dados == '/cadastrar'){ ?>
             <label>Nome</label>
             <input type="text" name="nome">
         <?php } ?>
+
         <label>Email</label>
         <input type="email" name="email">
+
         <label>Senha</label>
         <input type="password" name="senha">
+
         <button type="submit"><?php echo $btn ?></button>
     </form>
     <br><br>
