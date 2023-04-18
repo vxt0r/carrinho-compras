@@ -12,6 +12,8 @@ $span = 'Ainda não possui conta ?';
 $link = '/cadastrar';
 $texto_link = 'Cadastre-se';
 
+if($this->view->dados == '/cadastrar?erro=1') $this->view->dados = '/cadastrar';
+
 if($this->view->dados == '/cadastrar'){
       $action='/cadastrar';
       $btn = 'Cadastrar';

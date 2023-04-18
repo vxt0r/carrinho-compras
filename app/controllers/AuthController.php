@@ -14,6 +14,7 @@ class AuthController extends Action{
         if(isset($_POST['nome']) && isset($_POST['email']) && isset($_POST['senha'])){
           if(empty($_POST['nome']) ||empty($_POST['email']) || empty($_POST['senha'])){
               header('location: /cadastrar?erro=1');
+              exit();
           }
             $autenticacao->cadastrar($_POST['nome'],$_POST['email'],$_POST['senha']);
         }
