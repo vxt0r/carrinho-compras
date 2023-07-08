@@ -14,16 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes();
+Auth::routes(['verify'=>true]);
 
 Route::redirect('/','/home');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
+    ->name('home')
+    ->middleware('verified');
+
 Route::post('/home', [App\Http\Controllers\HomeController::class, 'adicionarProduto'])->name('home.add');
 
-Route::get('/carrinho', [App\Http\Controllers\HomeController::class, 'carrinho'])->name('carrinho');
+Route::get('/carrinho', [App\Http\Controllers\HomeController::class, 'carrinho'])
+    ->name('carrinho')
+    ->middleware('verified');
+
 Route::get('/carrinho/remover/{id}', [App\Http\Controllers\HomeController::class, 'removerProduto'])->name('carrinho.remove');
 Route::get('/carrinho/limpar/{id}', [App\Http\Controllers\HomeController::class, 'limparCarrinho'])->name('carrinho.limpar');
 Route::get('/carrinho?finalizar=1', [App\Http\Controllers\HomeController::class, 'carrinho'])->name('carrinho.finalizar');
 
-Route::post('/pedido', [App\Http\Controllers\HomeController::class, 'pedido'])->name('pedido');
+Route::post('/pedido', [App\Http\Controllers\HomeController::class, 'pedido'])
+    ->name('pedido')
+    ->middleware('verified');

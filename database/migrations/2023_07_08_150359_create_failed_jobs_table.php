@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carrinhos', function (Blueprint $table) {
+        Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->string('uuid')->unique();
+            $table->text('connection');
+            $table->text('queue');
+            $table->longText('payload');
+            $table->longText('exception');
+            $table->timestamp('failed_at')->useCurrent();
         });
     }
 
@@ -23,10 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('carrinhos', function (Blueprint $table) {
-            $table->dropForeign('carrinhos_user_id_foreign');
-        });
-        
-        Schema::dropIfExists('carrinhos');
+        Schema::dropIfExists('failed_jobs');
     }
 };

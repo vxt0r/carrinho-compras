@@ -17,6 +17,6 @@
         @endforeach
 </div>
 <div class="mx-auto mt-4 text-center">
-    <a href="{{route('carrinho')}}" class="text-white">Voltar para a página inicial</a>
+    <a href="{{route('carrinho')}}" class="text-white">Ir para o carrinho</a>
 </div>
 @endsection

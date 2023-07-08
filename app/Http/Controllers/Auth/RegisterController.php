@@ -72,9 +72,8 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        $user_id = User::where('email',$data['email'])->first();
         Carrinho::create([
-            'user_id' => $user_id->id
+            'user_id' => $user->id
         ]);
 
         return $user;
