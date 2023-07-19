@@ -10,12 +10,13 @@
         <div class="col-md-8">
             <div class="card bg-dark text-white p-3">
                 @forelse ($carrinho[0]->produto as $i=>$item)
-                <div class="d-flex justify-content-around">
+                <div class="w-75 d-flex justify-content-between mx-auto mb-2">
                     <span class="fs-5">
                         {{$item->nome}} - R$ {{$item->preco}} - Quantidade : {{$carrinho[0]->carrinhoProdutos[$i]->qtd}}
                     </span>
                     
-                    <a href="{{route('carrinho.remove',['id'=>$carrinho[0]->carrinhoProdutos[$i]->id])}}" class="text-danger">
+                    <a href="{{route('carrinho.remove',['id'=>$carrinho[0]->carrinhoProdutos[$i]->id])}}" 
+                        class="bg-danger text-white text-decoration-none fs-5 p-1 rounded">
                         Remover
                     </a>
                 </div>
@@ -40,8 +41,11 @@
                 @endif
             </div>
         </div>
-        <a href="{{route('home')}}"  class="fs-5 text-dark text-center mt-4">Voltar para a página inicial</a>
-        <a href="{{route('carrinho.limpar',['id'=>$carrinho[0]->id])}}" class="fs-5 text-white text-center mt-4">Limpar carrinho</a>
+    </div>
+
+    <div class="row w-25 mx-auto mt-4">
+        <a href="{{route('home')}}" class="bg-dark p-1 fs-5 mb-3 text-center text-light rounded text-decoration-none">Voltar para a página inicial</a>
+        <a href="{{route('carrinho.limpar',['id'=>$carrinho[0]->id])}}" class="bg-danger fs-5 p-1 text-center text-white rounded text-decoration-none">Limpar carrinho</a>
     </div>
 </div>
 @endsection

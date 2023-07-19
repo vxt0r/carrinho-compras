@@ -14,15 +14,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $data = [
             ['nome' => 'Mouse','preco' => '50.00'],
             ['nome' => 'Teclado','preco' => '80.00'],
+            ['nome' => 'Monitor','preco' => '90.00'],
+            ['nome' => 'HD','preco' => '150.00'],
+            ['nome' => 'SSD','preco' => '200.00'],
+            ['nome' => 'RAM','preco' => '250.00'],
         ];
 
         Produto::insert($data);

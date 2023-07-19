@@ -15,6 +15,5 @@ class Produto extends Model
     {
         return $this->belongsToMany(Carrinho::class,'carrinho_produtos');
     }
-
     
 }

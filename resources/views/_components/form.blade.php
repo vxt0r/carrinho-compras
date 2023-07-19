@@ -8,4 +8,4 @@
     </select>
     <button type="submit" class="mt-2 border border-0 rounded bg-success">Confirmar</button>
 </form>
-<a href="{{route('carrinho')}}" class="text-center text-danger mt-5">Cancelar</a>
+<a href="{{route('carrinho')}}" class="bg-danger fs-6 p-2 rounded text-center text-white mx-auto mt-5 text-decoration-none">Cancelar</a>

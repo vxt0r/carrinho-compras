@@ -27,7 +27,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $produtos = Produto::all();
+        if(isset($_GET['busca'])){
+            $produtos = $produtos = Produto::where('nome','LIKE','%'.$_GET['busca'].'%')->get();
+        }
+        else{
+            $produtos = Produto::all();
+        }
+
         return view('home',['produtos'=>$produtos]);
     }
 
