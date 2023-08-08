@@ -4,8 +4,11 @@
 - A aplicação simula um carrinho de compras de uma loja virtual
 - Adicionar e remover produtos, definir e ver detalhes da compra
 - Tela de admin para edição de produtos pela interface gráfica
+- OBS: a definição de um admin deve ser feita manualmente (pelo banco de dados) ao usuário, mudando o valor do campo admin de 0 para 1
 - Paginação, filtros e upload de imagens
-- OBS: Não possui integração com sistemas de pagamentos
+- Login com confirmação de email
+- OBS2: Não possui integração com sistemas de pagamentos
+
 </br>
 <a href="https://youtu.be/9t7FxTqH_CI" target="_blank" rel="noopener noreferrer">Vídeo demonstrativo</a>
 
@@ -19,7 +22,7 @@
     composer dump-autoload 
     php artisan key:generate
 
-**As configurações da conexão do banco de dados (drive, host, user, password) devem ser feitas no arquivo .env**
+**OBS: Para o funcionamento da aplicação, as configurações da sua conexão com o banco de dados, assim como as configurações do seu servidor SMTP devem ser definidas no arquivo .env, nas constantes que iniciam com DB e MAIL, respectivamente**
 
 **Criar o banco de dados e tabelas com adição de registro de produtos**
 
