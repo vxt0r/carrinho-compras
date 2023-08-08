@@ -17,7 +17,7 @@
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body class="bg-secondary">
+<body class="bg-secondary fs-5 text-center text-white">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-dark shadow-sm">
             <div class="container">
@@ -56,6 +56,14 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if (Auth::user()->admin)
+                                        @if (Route::currentRouteName() == 'home')
+                                            <a class="dropdown-item" href="{{route('admin.index')}}">Painel do Admin</a>
+                                        @else
+                                            <a class="dropdown-item" href="{{route('home')}}">Home</a>
+                                        @endif
+                                    @endif
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -65,6 +73,8 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
+
+
                                 </div>
                             </li>
                         @endguest

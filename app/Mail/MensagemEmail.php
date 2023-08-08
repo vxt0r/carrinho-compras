@@ -37,7 +37,7 @@ class MensagemEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.mensagem',
+            markdown: 'emails.message',
         );
     }
 

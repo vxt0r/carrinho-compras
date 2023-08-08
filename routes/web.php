@@ -21,17 +21,22 @@ Route::redirect('/','/home');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
     ->name('home')
     ->middleware('verified');
+    
+Route::post('/home', [App\Http\Controllers\HomeController::class, 'addProduct'])->name('home.add');
 
-Route::post('/home', [App\Http\Controllers\HomeController::class, 'adicionarProduto'])->name('home.add');
+Route::group(['prefix'=>'carrinho'],function(){
+    Route::get('/',[App\Http\Controllers\HomeController::class, 'cart'])->name('carrinho');
+    Route::get('/remover/{id}',[App\Http\Controllers\HomeController::class, 'removeProduct'])->name('carrinho.remove');
+    Route::get('/limpar/{id}', [App\Http\Controllers\HomeController::class, 'clearCart'])->name('carrinho.limpar');
+    Route::get('/?finalizar=1', [App\Http\Controllers\HomeController::class, 'cart'])->name('carrinho.finalizar');
+});
 
-Route::get('/carrinho', [App\Http\Controllers\HomeController::class, 'carrinho'])
-    ->name('carrinho')
-    ->middleware('verified');
+Route::get('/pedido', [App\Http\Controllers\HomeController::class, 'order'])
+    ->name('pedido');
 
-Route::get('/carrinho/remover/{id}', [App\Http\Controllers\HomeController::class, 'removerProduto'])->name('carrinho.remove');
-Route::get('/carrinho/limpar/{id}', [App\Http\Controllers\HomeController::class, 'limparCarrinho'])->name('carrinho.limpar');
-Route::get('/carrinho?finalizar=1', [App\Http\Controllers\HomeController::class, 'carrinho'])->name('carrinho.finalizar');
+Route::post('/pedido', [App\Http\Controllers\HomeController::class, 'makeOrder'])
+    ->name('pedido.confirmar');
 
-Route::post('/pedido', [App\Http\Controllers\HomeController::class, 'pedido'])
-    ->name('pedido')
-    ->middleware('verified');
+Route::resource('/admin', App\Http\Controllers\AdminController::class)
+    ->middleware('admin');
+

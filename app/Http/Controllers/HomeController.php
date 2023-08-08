@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Carrinho;
 use App\Models\CarrinhoProdutos;
 use App\Models\Produto;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,69 +29,82 @@ class HomeController extends Controller
     public function index()
     {
         if(isset($_GET['busca'])){
-            $produtos = $produtos = Produto::where('nome','LIKE','%'.$_GET['busca'].'%')->get();
+            $products = Produto::where('nome','LIKE','%'.$_GET['busca'].'%')->get();
         }
         else{
-            $produtos = Produto::all();
+            $products = Produto::paginate(4);
         }
 
-        return view('home',['produtos'=>$produtos]);
+        $user = User::find(Auth::id());
+        return view('home',['products'=>$products,'user'=> $user]);
     }
 
-    public function carrinho()
+    public function cart()
     {
         $user_id = Auth::id();
-        $carrinho = Carrinho::where('user_id',$user_id)->get();
-        return view('carrinho',['carrinho'=>$carrinho]);
+        $cart = Carrinho::where('user_id',$user_id)->get();
+        return view('user.cart',['cart'=>$cart[0]]);
     }
 
-    public function adicionarProduto()
+    public function addProduct()
     {
         
         $user_id = Auth::id();
-        $carrinho = Carrinho::where('user_id',$user_id)->first();
+        $cart = Carrinho::where('user_id',$user_id)->first();
 
-        $produto = CarrinhoProdutos::where('produto_id',$_POST['id'])->get();
+        $product = CarrinhoProdutos::where('produto_id',$_POST['id'])->get();
     
-        if(isset($produto[0])){
-            $nova_quantidade = (int)$produto[0]->qtd + (int)$_POST['qtd'];
-            $produto[0]->update(['qtd'=> $nova_quantidade]);
+        if(isset($product[0])){
+            $new_quantity = (int)$product[0]->qtd + (int)$_POST['qtd'];
+            $product[0]->update(['qtd'=> $new_quantity]);
         }
         else{
             CarrinhoProdutos::create([
                 'produto_id' =>  $_POST['id'],
                 'qtd' => $_POST['qtd'],
-                'carrinho_id' => $carrinho->id
+                'carrinho_id' => $cart->id
             ]);
         }
        
         return redirect()->route('carrinho');
     }
 
-    public function removerProduto(string|int $id)
+    public function removeProduct(string|int $id)
     {
-
-        $produto = CarrinhoProdutos::find($id);
-        $produto->delete();
+        $product = CarrinhoProdutos::find($id);
+        $product->delete();
         return redirect()->route('carrinho');
     }
 
-    public function limparCarrinho(string|int $id)
+    public function clearCart(string|int $id)
     {
-
-        $produtos = CarrinhoProdutos::where('carrinho_id',$id);
-        $produtos->delete(); 
+        $products = CarrinhoProdutos::where('carrinho_id',$id);
+        $products->delete(); 
         return redirect()->route('carrinho');
     }
 
-    public function pedido(Request $request)
+    public function order()
+    {
+        session_start();
+        if(isset($_SESSION['order']) && isset($_SESSION['cart'])){
+            return view('user.order',[
+               'order'=> $_SESSION['order'],
+               'cart' => $_SESSION['cart'], 
+            ]);
+        }
+       else {
+            return redirect()->route('home');
+       }
+    }
+
+    public function makeOrder(Request $request)
     {
         $user_id = Auth::id();
-        $carrinho = Carrinho::where('user_id',$user_id)->get();
-        return view('pedido',[
-            'dados'=>$request->all(),
-            'carrinho' => $carrinho
-        ]);
+        session_start();
+        $_SESSION['cart'] = Carrinho::where('user_id',$user_id)->get()[0];
+        $_SESSION['order'] = $request->all();
+        return redirect()->route('pedido');
+
     }
 
 }
