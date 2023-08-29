@@ -8,6 +8,8 @@ use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -46,17 +48,19 @@ class HomeController extends Controller
         return view('user.cart',['cart'=>$cart[0]]);
     }
 
-    public function addProduct()
+    public function addProduct(Request $request)
     {
         
+        $request->validate(['id' => 'numeric','qtd' => 'numeric|max:15']);
         $user_id = Auth::id();
         $cart = Carrinho::where('user_id',$user_id)->first();
 
         $product = CarrinhoProdutos::where('produto_id',$_POST['id'])->get();
+        
     
         if(isset($product[0])){
-            $new_quantity = (int)$product[0]->qtd + (int)$_POST['qtd'];
-            $product[0]->update(['qtd'=> $new_quantity]);
+            DB::table('carrinho_produtos')
+                ->increment('qtd', $_POST['qtd'], ['id' => $product[0]->id]);
         }
         else{
             CarrinhoProdutos::create([
@@ -79,17 +83,16 @@ class HomeController extends Controller
     public function clearCart(string|int $id)
     {
         $products = CarrinhoProdutos::where('carrinho_id',$id);
-        $products->delete(); 
+        $products->delete();
         return redirect()->route('carrinho');
     }
 
     public function order()
     {
-        session_start();
-        if(isset($_SESSION['order']) && isset($_SESSION['cart'])){
+        if(Session::has('cart')){
             return view('user.order',[
-               'order'=> $_SESSION['order'],
-               'cart' => $_SESSION['cart'], 
+                'order'=> Session::get('order'),
+                'cart' => Session::get('cart'), 
             ]);
         }
        else {
@@ -100,11 +103,10 @@ class HomeController extends Controller
     public function makeOrder(Request $request)
     {
         $user_id = Auth::id();
-        session_start();
-        $_SESSION['cart'] = Carrinho::where('user_id',$user_id)->get()[0];
-        $_SESSION['order'] = $request->all();
+        $cart = Carrinho::where('user_id',$user_id)->get()[0];
+        Session::put('cart',$cart);
+        Session::put('order',$request->all());
         return redirect()->route('pedido');
-
     }
 
 }
