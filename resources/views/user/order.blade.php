@@ -6,12 +6,15 @@
 
 @section('content')
 <h3 class="text-center">Seu pedido foi realizado com sucesso. Parabéns pela compra !</h3>
-<ul class="w-50 bg-light text-dark text-start mx-auto rounded mt-3 list-unstyled p-2">
+<ul class="order-ul w-50 bg-light text-dark text-start mx-auto rounded mt-3 list-unstyled p-2">
     @foreach ($cart->produto as $i=>$item)
-        <li>
-            {{$item->nome}} - R$ {{$item->preco}} - Quantidade : {{$cart_product[$i]->qtd}}
-            Sub-total : R$ {{$item->preco * $cart_product[$i]->qtd}}
+        <li class="row order-list">
+            <span class="col-sm-6">{{$item->nome}}</span>
+            <span class="col-sm-6">R$ {{$item->preco}}</span>
+            <span class="col-sm-6">Quantidade : {{$cart_product[$i]->qtd}}</span>
+            <span class="col-sm-6">Sub-total : R$ {{$item->preco * $cart_product[$i]->qtd}}</span>
         </li>
+        <br>
     @endforeach
     <li>Total : R$ {{$order['total']}}</li>
     <li>{{$order['forma-pagamento']}}</li>

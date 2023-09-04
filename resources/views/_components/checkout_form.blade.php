@@ -1,4 +1,4 @@
-<form action="{{route('pedido.confirmar')}}" method="POST" class="w-25 d-flex flex-column mx-auto">
+<form action="{{route('pedido.confirmar')}}" method="POST" class="w-25 check-form d-flex flex-column mx-auto">
     @csrf
     <input type="hidden" name="total" value="{{$total}}"">
     <select name="forma-pagamento" class="rounded my-2 border border-0">

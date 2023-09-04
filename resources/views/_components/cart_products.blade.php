@@ -6,9 +6,9 @@
 
 <div class="bg-dark p-3">
     @forelse ($cart->produto as $i=>$item)
-    <div class="w-75 d-flex justify-content-between mx-auto mb-5">
-        <span>{{$item->nome}} - R$ {{$item->preco}} - Quantidade : {{$cart_product[$i]->qtd}}</span>        
-        <a href="{{route('carrinho.remove',['id'=>$cart_product[$i]->id])}}" class="bg-danger text-white text-decoration-none p-1 rounded">Remover</a>
+    <div class="cart row d-flex justify-content-center mx-auto mb-5">
+        <span class="col-sm-12 col-md-9">{{$item->nome}} - R$ {{$item->preco}} - Quantidade : {{$cart_product[$i]->qtd}}</span>        
+        <a href="{{route('carrinho.remove',['id'=>$cart_product[$i]->id])}}" class="col-sm-3 bg-danger text-white text-decoration-none p-1 rounded">Remover</a>
     </div>
 
     @php
