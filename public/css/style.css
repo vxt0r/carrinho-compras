@@ -7,6 +7,10 @@ img{
     max-width: 472px;
 }
 
+.admin-div{
+    width: 50%;
+}
+
 @media(max-width:767.5px){
     .cart a{
         margin-top: 0.4em;
@@ -23,6 +27,9 @@ img{
 @media(max-width:576px){
     .cart a{
         width: 30%;
+    }
+    .admin-div{
+        width: 75%;
     }
 }
 
